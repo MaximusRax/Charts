@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import supabase from "../supabase-client.ts";
 import { Chart } from "react-charts";
+import Form from "./Form.tsx";
+
 
 function Dashboard() {
   const [matrics, setMatrics] = useState<{ name: string; sum: number }[]>([]);
@@ -8,7 +10,7 @@ function Dashboard() {
     try {
       const { data, error } = await supabase
         .from("sales_deals")
-        .select(`name,value.sum()`);
+        .select(`name,sum:value.sum()`);
       if (error) throw error;
       console.log(data);
       setMatrics(data);
@@ -18,6 +20,24 @@ function Dashboard() {
   };
   useEffect(() => {
     fetchMatrics();
+    const channel = supabase
+      .channel("deal-changes")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "sales_deals",
+        },
+        (payload) => {
+          console.log(payload.new);
+
+        }
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const chartData = [
@@ -73,6 +93,7 @@ function Dashboard() {
           />
         </div>
       </div>
+      <Form metrics={matrics}/>
     </div>
   );
 }
