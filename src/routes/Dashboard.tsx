@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import supabase from "../supabase-client.ts";
 import { Chart } from "react-charts";
-import Form from "./Form.tsx";
-
+import Form from "../components/Form.tsx";
 
 function Dashboard() {
   const [matrics, setMatrics] = useState<{ name: string; sum: number }[]>([]);
@@ -31,7 +30,6 @@ function Dashboard() {
         },
         (payload) => {
           console.log(payload.new);
-
         }
       )
       .subscribe();
@@ -93,7 +91,7 @@ function Dashboard() {
           />
         </div>
       </div>
-      <Form metrics={matrics}/>
+      <Form metrics={matrics} />
     </div>
   );
 }

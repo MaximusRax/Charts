@@ -1,4 +1,4 @@
-import Dashboard from "./components/Dashboard.tsx";
+import Dashboard from "./routes/Dashboard.tsx";
 import Header from "./components/Header.tsx";
 
 function App() {

@@ -18,12 +18,12 @@ function Form({ metrics }: FormProps) {
     ): Promise<Error | null> => {
       const newDeal = {
         name: formData.get("name") as string,
-        value: Number(formData.get("value")),
+        sum: Number(formData.get("sum")),
       };
-      if (isNaN(newDeal.value)) throw new Error("!Please enter Number.");
+      if (isNaN(newDeal.sum)) throw new Error("!Please enter Number.");
       const { data, error } = await supabase.from("sales_deals").insert({
         name: newDeal.name,
-        value: newDeal.value,
+        sum: newDeal.sum,
       });
       console.log(data);
       if (error) return new Error("!Unable to Update..");
