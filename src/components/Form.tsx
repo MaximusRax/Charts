@@ -1,14 +1,7 @@
 import { useActionState } from "react";
 import supabase from "../supabase-client.ts";
+import type { FormProps } from "./types.ts";
 
-type Metric = {
-  name: string;
-  sum: number;
-};
-
-type FormProps = {
-  metrics: Metric[];
-};
 
 function Form({ metrics }: FormProps) {
   const [error, submitAction, isPending] = useActionState(
