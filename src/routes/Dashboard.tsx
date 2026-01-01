@@ -30,7 +30,7 @@ function Dashboard() {
         },
         (payload) => {
           console.log(payload.new);
-        }
+        },
       )
       .subscribe();
     return () => {

@@ -1,10 +1,9 @@
 import { useActionState } from "react";
-import supabase from "../supabase-client.ts";
 import { useAuth } from "../context/useAuth.ts";
+import { data } from "react-router-dom";
 
 const Signin = () => {
-  const cntx = useAuth();
-  // console.log(cntx);
+  const {signInUser} = useAuth();
   const [error, submitAction, isPending] = useActionState<
     Error | null,
     FormData
@@ -14,24 +13,20 @@ const Signin = () => {
     if (!email || !password) {
       return new Error("Email and password are required");
     }
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) return new Error("!Unable to Signin");
-      if (!error && data?.session) {
-        cntx?.setSession(data.session);
+    const responce = await signInUser(email, password);
+    if (responce.success) {
+      console.log(data);
+      if (responce.data?.session) {
+        //Navigate to Dashboard
         return null;
       }
-      return null;
-    } catch (error) {
-      if (error instanceof Error) console.log(error.message, error.stack);
-      return error as Error;
     }
-  }, null);
+    if (!responce.success) {
+      return new Error(responce.error);
+    }
 
+    return null;
+  }, null);
 
   return (
     <>

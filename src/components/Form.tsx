@@ -2,12 +2,11 @@ import { useActionState } from "react";
 import supabase from "../supabase-client.ts";
 import type { FormProps } from "./types.ts";
 
-
 function Form({ metrics }: FormProps) {
   const [error, submitAction, isPending] = useActionState(
     async (
       _previousState: Error | null,
-      formData: FormData
+      formData: FormData,
     ): Promise<Error | null> => {
       const newDeal = {
         name: formData.get("name") as string,
@@ -23,7 +22,7 @@ function Form({ metrics }: FormProps) {
 
       return null;
     },
-    null
+    null,
   );
 
   const generateOptions = () => {

@@ -1,10 +1,10 @@
 import { createContext, useContext } from "react";
 import type { AuthContextType } from "./types.ts";
-const AuthContext = createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<AuthContextType | null>(null);
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  // Null is not set it will Throw Error 
-  // if (!context)
-  //   throw new Error("useAuth must be used within an AuthContextprovide");
+  // Null is not set it will Throw Error
+  if (!context)
+    throw new Error("useAuth must be used within an AuthContextprovide");
   return context;
 };
